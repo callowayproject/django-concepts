@@ -1,0 +1,10 @@
+.text-core {
+    left: 105px;
+}
+.text-core .text-wrap textarea,
+.text-core .text-wrap input {
+  border: 1px solid #ccc !important;
+}
+.text-core .text-wrap input {
+  width: 40em !important;
+}

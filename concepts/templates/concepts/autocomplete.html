@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    django.jQuery().ready(
+        function() { 
+            $("#{{ element_id}}").autocomplete({
+                source: "{{ autocomplete_url }}"
+            }); 
+        }
+    );
+</script>

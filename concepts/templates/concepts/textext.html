@@ -1,0 +1,12 @@
+<script type="text/javascript">
+    django.jQuery('#{{ element_id}}')
+        .textext({
+            plugins : 'tags autocomplete ajax',
+            ajax : {
+                url : '{{ autocomplete_url }}',
+                dataType : 'json',
+                cacheResults : false
+            },
+            tagsItems: {{ items|safe }}
+        });
+</script>
