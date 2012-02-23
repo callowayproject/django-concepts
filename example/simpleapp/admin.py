@@ -1,14 +1,11 @@
-from models import SimpleText
+from models import SimpleText, SimpleTextTwo
 from django.contrib import admin
 from django import forms
+from concepts.admin import ConceptItemInline
 
-class SimpleTextAdminForm(forms.ModelForm):
-    """SimpleTextAdminForm"""
-    class Meta:
-        model = SimpleText
-
-class SimpleTextAdmin(admin.ModelAdmin):
-    form = SimpleTextAdminForm
+class SimpleTextTwoAdmin(admin.ModelAdmin):
+    inlines = [ConceptItemInline, ]
 
 
-admin.site.register(SimpleText, SimpleTextAdmin)
+admin.site.register(SimpleText)
+admin.site.register(SimpleTextTwo, SimpleTextTwoAdmin)
