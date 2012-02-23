@@ -27,7 +27,16 @@ def list_tags(request):
     if not term:
         term = request.GET.get('q', '')
     if term:
-        tags = Concept.objects.filter(name__istartswith=term).values_list('name', flat=True)
+        tag_items = Concept.objects.filter(name__istartswith=term).values_list(
+            'name', 'substitute__name', 'enabled')
+        tags = []
+        for item in tag_items:
+            if item[1]:
+                tags.append("%s|%s" % (item[0], item[1]))
+            elif not item[2]:
+                tags.append("%s|-" % item[0])
+            else:
+                tags.append(item[0])
     else:
         tags = []
     

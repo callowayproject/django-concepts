@@ -7,6 +7,43 @@
                 dataType : 'json',
                 cacheResults : false
             },
-            tagsItems: {{ items|safe }}
+            tagsItems: {{ items|safe }},
+            autocomplete: {
+                render: function(suggestion){
+                    var temp = new Array();
+                    temp = suggestion.split('|');
+                    if (temp.length == 2) {
+                        if (temp[1] == "-") {
+                            return '<span style="text-decoration: line-through">' + temp[0]+'</span>';
+                        } else {
+                            return temp[0] + " &rarr; " + temp[1];
+                        }
+                    } else {
+                        return temp[0];
+                    }
+                }
+            }
         });
+    var p = django.jQuery('#{{ element_id }}').textext()[0]._plugins.tags.__proto__,
+        OPT_HTML_TAG = django.jQuery('#{{ element_id }}').textext()[0]._defaults.html.tag,
+        CSS_TAG = 'text-tag';
+    p.renderTag = function(tag) {
+        var self = this,
+            node = django.jQuery(OPT_HTML_TAG),
+            temp = new Array();
+        temp = self.itemManager().itemToString(tag).split('|');
+        if (temp.length == 2) {
+            if (temp[1] == "-") {
+                out = '<span style="text-decoration: line-through">' + temp[0]+'</span>';
+            } else {
+                out = temp[0] + " &rarr; " + temp[1];
+            }
+        } else {
+            out = temp[0];
+        }
+        
+        node.find('.text-label').html(out);
+        node.data(CSS_TAG, temp[0]);
+        return node;
+    }
 </script>

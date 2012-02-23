@@ -36,16 +36,26 @@ class Concept(TagBase):
     bbox_w = models.DecimalField(_('bounding box west'), 
         max_digits=11, decimal_places=6, blank=True, null=True)
     
+    @property
+    def items(self):
+        if django.VERSION < (1, 2):
+            return self.conceptitem_items
+        else:
+            return self.concepts_conceptitem_items
+    
     def name_with_sub(self):
         """
         Render the name, or name with indication what its substitute is
         """
         if self.substitute:
-            return "%s -> %s" % (self.name, self.substitute)
+            return "%s &rarr; %s" % (self.name, self.substitute)
+        elif not self.enabled:
+            return '<span style="text-decoration: line-through">%s</span>' % self.name
         else:
             return self.name
     name_with_sub.short_description = _("Name")
     name_with_sub.admin_order_field = "name"
+    name_with_sub.allow_tags = True
     
     def save(self, *args, **kwargs):
         if not self.id:
@@ -54,6 +64,8 @@ class Concept(TagBase):
         if self.substitute:
             items = self.items.all()
             items.update(tag=self.substitute)
+        if not self.enabled:
+            self.items.all().delete()
     
     class Meta:
         verbose_name = _("Concept")

@@ -1,9 +1,11 @@
 import django
 from django.contrib import admin
+from django.contrib.contenttypes.generic import GenericTabularInline
 from django.db.models import Count
 from django import forms
-from concepts.models import Concept, ConceptItem
 
+from concepts.models import Concept, ConceptItem
+from concepts.settings import WEIGHTS
 
 class ConceptAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -16,13 +18,26 @@ class ConceptAdminForm(forms.ModelForm):
     class Meta:
         model = Concept
 
-class ConceptItemInline(admin.StackedInline):
+class ConceptItemAdminForm(forms.ModelForm):
+    weight = forms.ChoiceField(choices=WEIGHTS, widget=forms.RadioSelect())
+    
+    class Meta:
+        model = ConceptItem
+
+class ConceptItemInline(GenericTabularInline):
+    form = ConceptItemAdminForm
     model = ConceptItem
+    raw_id_fields = ('tag', )
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        print db_field
+        return super(ConceptItemInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class ConceptAdmin(admin.ModelAdmin):
-    list_display = ["name_with_sub", "last_tagged", "items"]
+    list_display = ["name_with_sub", "last_tagged", "concept_items"]
     form = ConceptAdminForm
     raw_id_fields = ('substitute', )
+    prepopulated_fields = {"slug": ("name",)}
     fieldsets = (
         (None, {'fields': ('name',)}),
         ('Moderation', {
@@ -38,16 +53,16 @@ class ConceptAdmin(admin.ModelAdmin):
             'fields': ('slug',)
         })
     )
-    def items(self, obj):
-        return obj.items
+    def concept_items(self, obj):
+        return obj.concept_items
     
     def queryset(self, request):
         """
         Return the normal queryset, but add the count of tagged items to it
         """
         if django.VERSION < (1, 2):
-            return super(ConceptAdmin, self).queryset(request).annotate(items=Count('conceptitem_items'))
+            return super(ConceptAdmin, self).queryset(request).annotate(concept_items=Count('conceptitem_items'))
         else:
-            return super(ConceptAdmin, self).queryset(request).annotate(items=Count('concepts_conceptitem_items'))
+            return super(ConceptAdmin, self).queryset(request).annotate(concept_items=Count('concepts_conceptitem_items'))
 
 admin.site.register(Concept, ConceptAdmin)
