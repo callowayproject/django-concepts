@@ -19,8 +19,12 @@ class ConceptAdminForm(forms.ModelForm):
         model = Concept
 
 class ConceptItemAdminForm(forms.ModelForm):
-    weight = forms.ChoiceField(choices=WEIGHTS, widget=forms.RadioSelect())
+    weight = forms.ChoiceField(label="weighting", choices=WEIGHTS, widget=forms.RadioSelect())
     
+    class Media:
+        css = {
+            'all': ('concepts/horizontalradio.css',)
+        }
     class Meta:
         model = ConceptItem
 
@@ -28,8 +32,8 @@ class ConceptItemInline(GenericTabularInline):
     form = ConceptItemAdminForm
     model = ConceptItem
     raw_id_fields = ('tag', )
+    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        print db_field
         return super(ConceptItemInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
