@@ -5,6 +5,7 @@ DEFAULT_SETTINGS = {
     'PARSER': 'concepts.parsers.default',
     'WIDGET': 'concepts.widgets.TextExtWidget',
     'WEIGHTS': ((0, 'Hide'), (10, 'Low'), (20, 'Medium'), (30, 'High')),
+    'WIDGET_CSS_PATH': 'concepts/horizontalradio.css',
 }
 
 USER_SETTINGS = DEFAULT_SETTINGS.copy()

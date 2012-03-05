@@ -5,7 +5,7 @@ from django.db.models import Count
 from django import forms
 
 from concepts.models import Concept, ConceptItem
-from concepts.settings import WEIGHTS
+from concepts.settings import WEIGHTS, WIDGET_CSS_PATH
 
 class ConceptAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -23,7 +23,7 @@ class ConceptItemAdminForm(forms.ModelForm):
     
     class Media:
         css = {
-            'all': ('concepts/horizontalradio.css',)
+            'all': (WIDGET_CSS_PATH,)
         }
     class Meta:
         model = ConceptItem
