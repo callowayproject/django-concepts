@@ -43,7 +43,7 @@ class ConceptAdmin(admin.ModelAdmin):
     raw_id_fields = ('substitute', )
     prepopulated_fields = {"slug": ("name",)}
     fieldsets = (
-        (None, {'fields': ('name',)}),
+        (None, {'fields': ('name', 'url',)}),
         ('Moderation', {
             'fields': ('substitute', 'enabled')
         }),
