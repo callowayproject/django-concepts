@@ -22,6 +22,8 @@ class Concept(TagBase):
     enabled = models.BooleanField(_("Enabled"), default=True, 
         help_text=_("""If unchecked, it will remove current associations and
             will not allow new associations."""))
+    url = models.CharField(blank=True, max_length=255, 
+        help_text=_("A URL for more information regarding this concept."))
     woeid = models.IntegerField(_('where on earth id'), blank=True, null=True)
     latitude = models.DecimalField(_('latitude'), 
         max_digits=11, decimal_places=6, blank=True, null=True)
