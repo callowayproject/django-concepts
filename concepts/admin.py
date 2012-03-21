@@ -42,6 +42,7 @@ class ConceptAdmin(admin.ModelAdmin):
     form = ConceptAdminForm
     raw_id_fields = ('substitute', )
     prepopulated_fields = {"slug": ("name",)}
+    search_fields = ['name']
     fieldsets = (
         (None, {'fields': ('name', 'url',)}),
         ('Moderation', {
