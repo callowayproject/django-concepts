@@ -112,3 +112,4 @@ class ConceptItem(GenericTaggedItemBase, ConceptItemBase):
     class Meta:
         verbose_name = _("Concept Item")
         verbose_name_plural = _("Concept Items")
+        ordering = ('id',)
