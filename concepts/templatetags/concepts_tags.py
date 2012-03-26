@@ -22,6 +22,7 @@ class ConceptsNode(template.Node):
         context[self.variable_name] = links
         return ''
 
+@register.tag
 def get_concepts_for_object(parser, token):
     """
     Get the concepts linked to the object instance passed
