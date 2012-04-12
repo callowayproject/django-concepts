@@ -35,3 +35,7 @@ def get_concepts_for_object(parser, token):
         raise template.TemplateSyntaxError("The proper usage is: {%% get_concepts_for_object object as var %}")
     
     return ConceptsNode(bits[1], bits[3])
+
+@register.filter(name='li_class')
+def li_class(weight):
+    return 5 - (weight / 5)
