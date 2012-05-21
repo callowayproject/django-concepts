@@ -1,7 +1,9 @@
 import datetime
 
 import django
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models.signals import pre_delete
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from taggit.models import TagBase, GenericTaggedItemBase, ItemBase
@@ -113,3 +115,15 @@ class ConceptItem(GenericTaggedItemBase, ConceptItemBase):
         verbose_name = _("Concept Item")
         verbose_name_plural = _("Concept Items")
         ordering = ('id',)
+
+# [EDU-2769] The association between Key concepts and an activity is not
+#           deleted when the activity is deleted
+def delete_listener(sender, instance, **kwargs):
+    ctype = ContentType.objects.get_for_model(sender)
+    concept_items = ConceptItem.objects.filter(content_type=ctype,
+                                               object_id=instance.id)
+
+    for ci in concept_items:
+        ci.delete()
+
+pre_delete.connect(delete_listener)
