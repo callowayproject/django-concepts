@@ -3,7 +3,6 @@ import datetime
 import django
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models.signals import pre_delete
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from taggit.models import TagBase, GenericTaggedItemBase, ItemBase
@@ -125,5 +124,3 @@ def delete_listener(sender, instance, **kwargs):
 
     for ci in concept_items:
         ci.delete()
-
-pre_delete.connect(delete_listener)
