@@ -3,49 +3,50 @@ import datetime
 import django
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import ugettext_lazy as _
 
 from taggit.models import TagBase, GenericTaggedItemBase, ItemBase
 
+
 class Concept(TagBase):
     """An idea or other freeform categorization of something"""
-    
-    created = models.DateTimeField(_('created'), 
+
+    created = models.DateTimeField(_('created'),
         auto_now_add=True,
         editable=False)
-    last_tagged = models.DateTimeField(_('last time tagged'), 
+    last_tagged = models.DateTimeField(_('last time tagged'),
         blank=True, null=True, editable=False, db_index=True)
-    substitute = models.ForeignKey('Concept', 
+    substitute = models.ForeignKey('Concept',
         blank=True, null=True, verbose_name=_('substitute'),
-        help_text=_("""Tag to use instead of this one. Moves current 
+        help_text=_("""Tag to use instead of this one. Moves current
             associations to the substitute tag and new association attempts
             are automatically swapped."""))
-    enabled = models.BooleanField(_("Enabled"), default=True, 
+    enabled = models.BooleanField(_("Enabled"), default=True,
         help_text=_("""If unchecked, it will remove current associations and
             will not allow new associations."""))
-    url = models.CharField(blank=True, max_length=255, 
+    url = models.CharField(blank=True, max_length=255,
         help_text=_("A URL for more information regarding this concept."))
     woeid = models.IntegerField(_('where on earth id'), blank=True, null=True)
-    latitude = models.DecimalField(_('latitude'), 
+    latitude = models.DecimalField(_('latitude'),
         max_digits=11, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(_('longitude'),
         max_digits=11, decimal_places=6, blank=True, null=True)
-    bbox_n = models.DecimalField(_('bounding box north'), 
+    bbox_n = models.DecimalField(_('bounding box north'),
         max_digits=11, decimal_places=6, blank=True, null=True)
-    bbox_s = models.DecimalField(_('bounding box south'), 
+    bbox_s = models.DecimalField(_('bounding box south'),
         max_digits=11, decimal_places=6, blank=True, null=True)
-    bbox_e = models.DecimalField(_('bounding box east'), 
+    bbox_e = models.DecimalField(_('bounding box east'),
         max_digits=11, decimal_places=6, blank=True, null=True)
-    bbox_w = models.DecimalField(_('bounding box west'), 
+    bbox_w = models.DecimalField(_('bounding box west'),
         max_digits=11, decimal_places=6, blank=True, null=True)
-    
+
     @property
     def items(self):
         if django.VERSION < (1, 2):
             return self.conceptitem_items
         else:
             return self.concepts_conceptitem_items
-    
+
     def name_with_sub(self):
         """
         Render the name, or name with indication what its substitute is
@@ -59,7 +60,7 @@ class Concept(TagBase):
     name_with_sub.short_description = _("Name")
     name_with_sub.admin_order_field = "name"
     name_with_sub.allow_tags = True
-    
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.created = datetime.datetime.today()
@@ -69,7 +70,7 @@ class Concept(TagBase):
             items.update(tag=self.substitute)
         if not self.enabled:
             self.items.all().delete()
-    
+
     class Meta:
         verbose_name = _("Concept")
         verbose_name_plural = _("Concepts")
@@ -84,7 +85,7 @@ class ConceptItemBase(ItemBase):
 
     class Meta:
         abstract = True
-    
+
     @classmethod
     def tags_for(cls, model, instance=None):
         if instance is not None:
@@ -95,32 +96,31 @@ class ConceptItemBase(ItemBase):
             '%s__content_object__isnull' % cls.tag_relname(): False
         }).distinct()
 
+
 class ConceptItem(GenericTaggedItemBase, ConceptItemBase):
     added = models.DateTimeField(auto_now_add=True, db_index=True)
     weight = models.IntegerField(blank=True, null=True)
-    
+
     def save(self, *args, **kwargs):
         """
         Add the date added and last_tagged to Tag
         """
         if not self.added:
             self.added = datetime.datetime.now()
-        
+
         super(ConceptItem, self).save(*args, **kwargs)
         self.tag.last_tagged = self.added
         self.tag.save()
-    
+
     class Meta:
         verbose_name = _("Concept Item")
         verbose_name_plural = _("Concept Items")
         ordering = ('id',)
 
-# [EDU-2769] The association between Key concepts and an activity is not
-#           deleted when the activity is deleted
+
+# The association between concepts and a related item must be
+# deleted when the item is deleted
 def delete_listener(sender, instance, **kwargs):
     ctype = ContentType.objects.get_for_model(sender)
-    concept_items = ConceptItem.objects.filter(content_type=ctype,
-                                               object_id=instance.id)
-
-    for ci in concept_items:
-        ci.delete()
+    ConceptItem.objects.filter(content_type=ctype,
+                               object_id=instance.id).delete()
