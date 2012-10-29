@@ -3,11 +3,12 @@ django-concepts
 """
 __version_info__ = {
     'major': 0,
-    'minor': 3,
-    'micro': 5,
+    'minor': 4,
+    'micro': 0,
     'releaselevel': 'final',
     'serial': 1
 }
+
 
 def get_version(short=False):
     assert __version_info__['releaselevel'] in ('alpha', 'beta', 'final')

@@ -1,8 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
-from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic.list_detail import object_list
 from django.utils import simplejson
 
@@ -14,7 +12,7 @@ def tagged_object_list(request, slug, queryset, **kwargs):
         queryset = queryset()
     tag = get_object_or_404(Concept, slug=slug)
     qs = queryset.filter(pk__in=ConceptItem.objects.filter(
-        concept=tag, content_type=ContentType.objects.get_for_model(queryset.model)
+        tag=tag, content_type=ContentType.objects.get_for_model(queryset.model)
     ).values_list("object_id", flat=True))
     if "extra_context" not in kwargs:
         kwargs["extra_context"] = {}
@@ -39,5 +37,5 @@ def list_tags(request):
                 tags.append(item[0])
     else:
         tags = []
-    
+
     return HttpResponse(simplejson.dumps(list(tags)), mimetype='application/javascript')
