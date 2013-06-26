@@ -1,0 +1,75 @@
+{% extends "admin/change_form.html" %}
+{% load admin_static i18n concept_related_items %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<style type="text/css" media="screen">
+  /* FILTER COLUMN */
+  div.module.filtered {
+      background: white url({% static "admin/img/changelist-bg.gif" %}) top right repeat-y !important;
+    border: none;
+    border-right: 1px solid #ddd;
+  }
+
+  #changelist-filter {
+      width: 160px;
+      border: none;
+      background: #efefef;
+      margin: 0;
+    float: right;
+  }
+
+  #changelist-filter h2 {
+      font-size: 11px;
+      padding: 2px 5px;
+      border-bottom: 1px solid #ddd;
+  }
+
+  #changelist-filter h3 {
+      font-size: 12px;
+      margin-bottom: 0;
+  }
+
+  #changelist-filter ul {
+      padding-left: 0;
+      margin-left: 10px;
+  }
+
+  #changelist-filter li {
+      list-style-type: none;
+      margin-left: 0;
+      padding-left: 0;
+  }
+
+  #changelist-filter a {
+      color: #999;
+  }
+
+  #changelist-filter a:hover {
+      color: #036;
+  }
+  .filtered form {
+    margin-right: 160px;
+  }
+</style>
+{% endblock %}
+{% block object-tools %}
+    {{ block.super }}
+<div class="module filtered">
+    <div id="changelist-filter">
+      <h2>{% trans 'Related Items' %}</h2>
+    {% concept_related_objects adminform.form.instance as related %}
+    {% for k,v in related.items %}
+      {% if v %}
+        <h3>{{ k|title }}</h3>
+        <ul>
+          {% for item in v %}
+            <li><a href="{% get_admin_url item %}" style="font-weight:normal;" target="_blank">{{ item }}</a></li>
+          {% endfor %}
+        </ul>
+        <hr/>
+      {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}
+{% block after_field_sets %}
+</div> {# class="module filtered" #}
+{% endblock %}

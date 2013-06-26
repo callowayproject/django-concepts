@@ -14,7 +14,7 @@ class ConceptsNode(template.Node):
     def __init__(self, obj, variable_name):
         self.obj = template.Variable(obj)
         self.variable_name = variable_name
-    
+
     def render(self, context):
         obj = self.obj.resolve(context)
         ctype = ContentType.objects.get_for_model(obj)
@@ -26,14 +26,14 @@ class ConceptsNode(template.Node):
 def get_concepts_for_object(parser, token):
     """
     Get the concepts linked to the object instance passed
-    
+
     {% get_concepts_for_object object as var %}
     """
     bits = token.split_contents()
-    
+
     if len(bits) != 4:
         raise template.TemplateSyntaxError("The proper usage is: {%% get_concepts_for_object object as var %}")
-    
+
     return ConceptsNode(bits[1], bits[3])
 
 @register.filter(name='li_class')
