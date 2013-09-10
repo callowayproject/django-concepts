@@ -47,12 +47,15 @@ class RelatedObjectsNode(Node):
             return ""
 
         rel = defaultdict(list)
-        related_models = [x.content_object for x in obj.concepts_conceptitem_items.all()]
-        for related in related_models:
-            # Get the app and model
-            model = related._meta.verbose_name
+        for x in obj.concepts_conceptitem_items.all():
+            related = x.content_object
+            if related is None:
+                obj.concepts_conceptitem.filter(pk=x.pk).delete()
+            else:
+                # Get the app and model
+                model = related._meta.verbose_name
 
-            rel[model].append(related)
+                rel[model].append(related)
 
         # Set the return variable to the dictionary.
         context[self.varname] = dict(rel)
