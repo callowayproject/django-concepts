@@ -308,10 +308,10 @@ class ConceptItem(GenericTaggedItemBase, ConceptItemBase):
         """
         if not self.added:
             self.added = datetime.datetime.now()
-
         super(ConceptItem, self).save(*args, **kwargs)
         self.tag.last_tagged = self.added
-        self.tag.save()
+        Concept.objects.filter(id=self.tag.id).update(last_tagged=self.added)
+        # self.tag.save()
 
     class Meta:
         verbose_name = _("Concept Item")

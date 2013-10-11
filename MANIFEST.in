@@ -8,4 +8,4 @@ include LICENSE
 include README
 include *.txt
 
-prune example/*
+prune example

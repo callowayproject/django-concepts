@@ -27,10 +27,10 @@ if (typeof django == "undefined") {
 	function TextExt() {};
 
 	/**
-	 * ItemManager is used to seamlessly convert between string that come from the user input to whatever 
-	 * the format the item data is being passed around in. It's used by all plugins that in one way or 
-	 * another operate with items, such as Tags, Filter, Autocomplete and Suggestions. Default implementation 
-	 * works with `String` type. 
+	 * ItemManager is used to seamlessly convert between string that come from the user input to whatever
+	 * the format the item data is being passed around in. It's used by all plugins that in one way or
+	 * another operate with items, such as Tags, Filter, Autocomplete and Suggestions. Default implementation
+	 * works with `String` type.
 	 *
 	 * Each instance of `TextExt` creates a new instance of default implementation of `ItemManager`
 	 * unless `itemManager` option was set to another implementation.
@@ -38,7 +38,7 @@ if (typeof django == "undefined") {
 	 * To satisfy requirements of managing items of type other than a `String`, different implementation
 	 * if `ItemManager` should be supplied.
 	 *
-	 * If you wish to bring your own implementation, you need to create a new class and implement all the 
+	 * If you wish to bring your own implementation, you need to create a new class and implement all the
 	 * methods that `ItemManager` has. After, you need to supply your pass via the `itemManager` option during
 	 * initialization like so:
 	 *
@@ -62,7 +62,7 @@ if (typeof django == "undefined") {
 	 * function will create a new instance of the plugin. *Without registering, the core won't
 	 * be able to see the plugin.*
 	 *
-	 * <span class="new label version">new in 1.2.0</span> You can get instance of each plugin from the core 
+	 * <span class="new label version">new in 1.2.0</span> You can get instance of each plugin from the core
 	 * via associated function with the same name as the plugin. For example:
 	 *
 	 *     $('#input').textext()[0].tags()
@@ -82,7 +82,7 @@ if (typeof django == "undefined") {
 
 		/**
 		 * TextExt provides a way to pass in the options to configure the core as well as
-		 * each plugin that is being currently used. The jQuery exposed plugin `$().textext()` 
+		 * each plugin that is being currently used. The jQuery exposed plugin `$().textext()`
 		 * function takes a hash object with key/value set of options. For example:
 		 *
 		 *     $('textarea').textext({
@@ -122,9 +122,9 @@ if (typeof django == "undefined") {
 		 *        }
 		 *
 		 * 3. Finally, options could be specified in mixed style. It's important to understand that
-		 * for each dot separated name, its alternative in camel case is also checked for, eg for 
-		 * `foo.bar.world` it's alternatives could be `fooBarWorld`, `foo.barWorld` or `fooBar.world`, 
-		 * which translates to `{ foo: { bar: { world: ... } } }`, `{ fooBarWorld: ... }`, 
+		 * for each dot separated name, its alternative in camel case is also checked for, eg for
+		 * `foo.bar.world` it's alternatives could be `fooBarWorld`, `foo.barWorld` or `fooBar.world`,
+		 * which translates to `{ foo: { bar: { world: ... } } }`, `{ fooBarWorld: ... }`,
 		 * `{ foo : { barWorld : ... } }` or `{ fooBar: { world: ... } }` respectively. For example:
 		 *
 		 *        {
@@ -155,7 +155,7 @@ if (typeof django == "undefined") {
 		 * @id TextExt.options.item.manager
 		 */
 		OPT_ITEM_MANAGER = 'item.manager',
-		
+
 		/**
 		 * List of plugins that should be used with the current instance of TextExt. The list could be
 		 * specified as array of strings or as comma or space separated string.
@@ -167,7 +167,7 @@ if (typeof django == "undefined") {
 		 * @id TextExt.options.plugins
 		 */
 		OPT_PLUGINS = 'plugins',
-		
+
 		/**
 		 * TextExt allows for overriding of virtually any method that the core or any of its plugins
 		 * use. This could be accomplished through the use of the `ext` option.
@@ -226,7 +226,7 @@ if (typeof django == "undefined") {
 		 * @id TextExt.options.ext
 		 */
 		OPT_EXT = 'ext',
-		
+
 		/**
 		 * HTML source that is used to generate elements necessary for the core and all other
 		 * plugins to function.
@@ -240,7 +240,7 @@ if (typeof django == "undefined") {
 		OPT_HTML_WRAP = 'html.wrap',
 
 		/**
-		 * HTML source that is used to generate hidden input value of which will be submitted 
+		 * HTML source that is used to generate hidden input value of which will be submitted
 		 * with the HTML form.
 		 *
 		 * @name html.hidden
@@ -250,11 +250,11 @@ if (typeof django == "undefined") {
 		 * @id TextExt.options.html.hidden
 		 */
 		OPT_HTML_HIDDEN = 'html.hidden',
-		
+
 		/**
 		 * Hash table of key codes and key names for which special events will be created
-		 * by the core. For each entry a `[name]KeyDown`, `[name]KeyUp` and `[name]KeyPress` events 
-		 * will be triggered along side with `anyKeyUp` and `anyKeyDown` events for every 
+		 * by the core. For each entry a `[name]KeyDown`, `[name]KeyUp` and `[name]KeyPress` events
+		 * will be triggered along side with `anyKeyUp` and `anyKeyDown` events for every
 		 * key stroke.
 		 *
 		 * Here's a list of default keys:
@@ -312,13 +312,13 @@ if (typeof django == "undefined") {
 		 * @id TextExt.events.postInvalidate
 		 */
 		EVENT_POST_INVALIDATE = 'postInvalidate',
-		
+
 		/**
 		 * Core triggers `getFormData` on every key press to collect data that will be populated
 		 * into the hidden input that will be submitted with the HTML form and data that will
 		 * be displayed in the input field that user is currently interacting with.
 		 *
-		 * All plugins that wish to affect how the data is presented or sent must react to 
+		 * All plugins that wish to affect how the data is presented or sent must react to
 		 * `getFormData` and populate the data in the following format:
 		 *
 		 *     {
@@ -336,7 +336,7 @@ if (typeof django == "undefined") {
 		 * with the weight 200 where as the Autocomplete plugin sets data with the weight 100.
 		 *
 		 * Here's an example of a typical `getFormData` handler:
-		 * 
+		 *
 		 *     TextExtPlugin.prototype.onGetFormData = function(e, data, keyCode)
 		 *     {
 		 *         data[100] = self.formDataObject('input value', 'form value');
@@ -376,10 +376,10 @@ if (typeof django == "undefined") {
 		 * @id TextExt.events.setInputData
 		 */
 		EVENT_SET_INPUT_DATA = 'setInputData',
-		
+
 		/**
-		 * Core triggers `postInit` event to let plugins run code after all plugins have been 
-		 * created and initialized. This is a good place to set some kind of global values before 
+		 * Core triggers `postInit` event to let plugins run code after all plugins have been
+		 * created and initialized. This is a good place to set some kind of global values before
 		 * somebody gets to use them. This is not the right place to expect all plugins to finish
 		 * their initialization.
 		 *
@@ -392,7 +392,7 @@ if (typeof django == "undefined") {
 
 		/**
 		 * Core triggers `ready` event after all global configuration and prepearation has been
-		 * done and the TextExt component is ready for use. Event handlers should expect all 
+		 * done and the TextExt component is ready for use. Event handlers should expect all
 		 * values to be set and the plugins to be in the final state.
 		 *
 		 * @name ready
@@ -421,7 +421,7 @@ if (typeof django == "undefined") {
 		 */
 
 		/**
-		 * Core triggers `[name]KeyUp` event for every key specifid in the `keys` option that is 
+		 * Core triggers `[name]KeyUp` event for every key specifid in the `keys` option that is
 		 * triggered within the component.
 		 *
 		 * @name [name]KeyUp
@@ -431,7 +431,7 @@ if (typeof django == "undefined") {
 		 */
 
 		/**
-		 * Core triggers `[name]KeyDown` event for every key specified in the `keys` option that is 
+		 * Core triggers `[name]KeyDown` event for every key specified in the `keys` option that is
 		 * triggered within the component.
 		 *
 		 * @name [name]KeyDown
@@ -441,7 +441,7 @@ if (typeof django == "undefined") {
 		 */
 
 		/**
-		 * Core triggers `[name]KeyPress` event for every key specified in the `keys` option that is 
+		 * Core triggers `[name]KeyPress` event for every key specified in the `keys` option that is
 		 * triggered within the component.
 		 *
 		 * @name [name]KeyPress
@@ -541,7 +541,7 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// ItemManager core component
-	
+
 	p = ItemManager.prototype;
 
 	/**
@@ -560,7 +560,7 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Filters out items from the list that don't match the query and returns remaining items. Default 
+	 * Filters out items from the list that don't match the query and returns remaining items. Default
 	 * implementation checks if the item starts with the query.
 	 *
 	 * @signature ItemManager.filter(list, query)
@@ -589,7 +589,7 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Returns `true` if specified item contains another string, `false` otherwise. In the default implementation 
+	 * Returns `true` if specified item contains another string, `false` otherwise. In the default implementation
 	 * `String.indexOf()` is used to check if item string begins with the needle string.
 	 *
 	 * @signature ItemManager.itemContains(item, needle)
@@ -643,8 +643,8 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Returns `true` if both items are equal, `false` otherwise. Because default implemenation works with 
-	 * string, input items are compared as strings. To use custom objects, different implementation of this 
+	 * Returns `true` if both items are equal, `false` otherwise. Because default implemenation works with
+	 * string, input items are compared as strings. To use custom objects, different implementation of this
 	 * method could for example compare `name` fields of `{ name : {String} }` type object.
 	 *
 	 * @signature ItemManager.compareItems(item1, item2)
@@ -665,7 +665,7 @@ if (typeof django == "undefined") {
 	// TextExt core component
 
 	p = TextExt.prototype;
-		
+
 	/**
 	 * Initializes current component instance with work with the supplied text input and options.
 	 *
@@ -717,7 +717,7 @@ if (typeof django == "undefined") {
 
 		$.extend(true, itemManager, self.opts(OPT_EXT + '.item.manager'));
 		$.extend(true, self, self.opts(OPT_EXT + '.*'), self.opts(OPT_EXT + '.core'));
-		
+
 		self.originalWidth = input.outerWidth();
 
 		self.invalidateBounds();
@@ -808,8 +808,8 @@ if (typeof django == "undefined") {
 			if(plugin)
 			{
 				self._plugins[name] = plugin = new plugin();
-				self[name] = (function(plugin) { 
-				  return function(){ return plugin; } 
+				self[name] = (function(plugin) {
+				  return function(){ return plugin; }
 				})(plugin);
 				initList.push(plugin);
 				$.extend(true, plugin, self.opts(OPT_EXT + '.*'), self.opts(OPT_EXT + '.' + name));
@@ -851,7 +851,7 @@ if (typeof django == "undefined") {
 
 	/**
 	 * Allows to add multiple event handlers which will be execued in the scope of the current object.
-	 * 
+	 *
 	 * @signature TextExt.on([target], handlers)
 	 *
 	 * @param target {Object} **Optional**. Target object which has traditional `bind(event, handler)` method.
@@ -883,7 +883,7 @@ if (typeof django == "undefined") {
 
 	/**
 	 * Triggers an event on the input box that user interacts with. All core events are originated here.
-	 * 
+	 *
 	 * @signature TextExt.trigger(event, ...args)
 	 *
 	 * @param event {String} Name of the event to trigger.
@@ -1006,7 +1006,7 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Serializes data for to be set into the hidden input field and which will be submitted 
+	 * Serializes data for to be set into the hidden input field and which will be submitted
 	 * with the HTML form.
 	 *
 	 * By default simple JSON serialization is used. It's expected that `JSON.stringify`
@@ -1073,7 +1073,7 @@ if (typeof django == "undefined") {
 	 * @signature TextExt.getFormData(keyCode)
 	 *
 	 * @param keyCode {Number} Key code number which has triggered this update. It's impotant to pass
-	 * this value to the plugins because they might return different values based on the key that was 
+	 * this value to the plugins because they might return different values based on the key that was
 	 * pressed. For example, the Tags plugin returns an empty string for the `input` value if the enter
 	 * key was pressed, otherwise it returns whatever is currently in the text input.
 	 *
@@ -1138,7 +1138,7 @@ if (typeof django == "undefined") {
 	 *
 	 * @param e {Event} jQuery event.
 	 * @param data {Object} Data that will be set.
-	 * 
+	 *
 	 * @author agorbatchev
 	 * @date 2011/08/22
 	 * @id TextExt.onSetFormData
@@ -1229,12 +1229,12 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// Plugin Base
-	
+
 	p = TextExtPlugin.prototype;
 
 	/**
 	 * Allows to add multiple event handlers which will be execued in the scope of the current object.
-	 * 
+	 *
 	 * @signature TextExt.on([target], handlers)
 	 *
 	 * @param target {Object} **Optional**. Target object which has traditional `bind(event, handler)` method.
@@ -1301,7 +1301,7 @@ if (typeof django == "undefined") {
 	/**
 	 * Allows starting of multiple timeout calls. Each time this method is called with the same
 	 * timer name, the timer is reset. This functionality is useful in cases where an action needs
-	 * to occur only after a certain period of inactivity. For example, making an AJAX call after 
+	 * to occur only after a certain period of inactivity. For example, making an AJAX call after
 	 * user stoped typing for 1 second.
 	 *
 	 * @signature TextExtPlugin.startTimer(name, delay, callback)
@@ -1364,7 +1364,7 @@ if (typeof django == "undefined") {
 	 * Shortcut to the core's `opts()` method. Returns option value.
 	 *
 	 * @signature TextExtPlugin.opts(name)
-	 * 
+	 *
 	 * @param name {String} Option name as described in the options.
 	 *
 	 * @author agorbatchev
@@ -1484,11 +1484,11 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// jQuery Integration
-	
+
 	/**
 	 * TextExt integrates as a jQuery plugin available through the `$(selector).textext(opts)` call. If
 	 * `opts` argument is passed, then a new instance of `TextExt` will be created for all the inputs
-	 * that match the `selector`. If `opts` wasn't passed and TextExt was already intantiated for 
+	 * that match the `selector`. If `opts` wasn't passed and TextExt was already intantiated for
 	 * inputs that match the `selector`, array of `TextExt` instances will be returned instead.
 	 *
 	 *     // will create a new instance of `TextExt` for all elements that match `.sample`
@@ -1515,7 +1515,7 @@ if (typeof django == "undefined") {
 	var textext = $.fn.textext = function(opts)
 	{
 		var css;
-		
+
 		if(!cssInjected && (css = $.fn.textext.css) != null)
 		{
 			$('head').append('<style>' + css + '</style>');
@@ -1542,7 +1542,7 @@ if (typeof django == "undefined") {
 	 * This static function registers a new plugin which makes it available through the `plugins` option
 	 * to the end user. The name specified here is the name the end user would put in the `plugins` option
 	 * to add this plugin to a new instance of TextExt.
-	 * 
+	 *
 	 * @signature $.fn.textext.addPlugin(name, constructor)
 	 *
 	 * @param name {String} Name of the plugin.
@@ -1561,7 +1561,7 @@ if (typeof django == "undefined") {
 	/**
 	 * This static function registers a new patch which is added to each instance of TextExt. If you are
 	 * adding a new patch, make sure to call this method.
-	 * 
+	 *
 	 * @signature $.fn.textext.addPatch(name, constructor)
 	 *
 	 * @param name {String} Name of the patch.
@@ -1582,7 +1582,7 @@ if (typeof django == "undefined") {
 	textext.ItemManager   = ItemManager;
 	textext.plugins       = {};
 	textext.patches       = {};
-})(jQuery);
+})(django.jQuery);
 
 (function($)
 {
@@ -1616,7 +1616,7 @@ if (typeof django == "undefined") {
 		input.val(Math.random());
 		input.val(val);
 	};
-})(jQuery);
+})(django.jQuery);
 
 /**
  * jQuery TextExt Plugin
@@ -1661,9 +1661,9 @@ if (typeof django == "undefined") {
 		 *
 		 * **Important**: Because it's necessary to pass options to `jQuery.ajax()` in a single object,
 		 * all jQuery related AJAX options like `url`, `dataType`, etc **must** be within the `ajax` object.
-		 * This is the exception to general rule that TextExt options can be specified in dot or camel case 
+		 * This is the exception to general rule that TextExt options can be specified in dot or camel case
 		 * notation.
-		 * 
+		 *
 		 * @author agorbatchev
 		 * @date 2011/08/16
 		 * @id TextExtAjax.options
@@ -1681,7 +1681,7 @@ if (typeof django == "undefined") {
 		 *     'dataCallback' : function(query)
 		 *     {
 		 *         return { 'search' : query };
-		 *     } 
+		 *     }
 		 *
 		 * @name ajax.data.callback
 		 * @default null
@@ -1690,7 +1690,7 @@ if (typeof django == "undefined") {
 		 * @id TextExtAjax.options.data.callback
 		 */
 		OPT_DATA_CALLBACK = 'ajax.data.callback',
-		
+
 		/**
 		 * By default, the server end point is constantly being reloaded whenever user changes the value
 		 * in the text input. If you'd rather have the client do result filtering, you can return all
@@ -1706,7 +1706,7 @@ if (typeof django == "undefined") {
 		 * @id TextExtAjax.options.cache.results
 		 */
 		OPT_CACHE_RESULTS = 'ajax.cache.results',
-		
+
 		/**
 		 * The loading message delay is set in seconds and will specify how long it would take before
 		 * user sees the message. If you don't want user to ever see this message, set the option value
@@ -1848,7 +1848,7 @@ if (typeof django == "undefined") {
 				data    : dataCallback(query),
 				success : function(data) { self.onComplete(data, query) },
 				error   : function(jqXHR, message) { console.error(message, query) }
-			}, 
+			},
 			self.opts('ajax')
 		);
 
@@ -1875,7 +1875,7 @@ if (typeof django == "undefined") {
 		var self   = this,
 			result = data
 			;
-		
+
 		self.dontShowLoading();
 
 		// If results are expected to be cached, then we store the original
@@ -1960,7 +1960,7 @@ if (typeof django == "undefined") {
 
 		if(suggestions && self.opts(OPT_CACHE_RESULTS) === true)
 			return self.onComplete(suggestions, query);
-		
+
 		self.startTimer(
 			'ajax',
 			self.opts(OPT_TYPE_DELAY),
@@ -1971,7 +1971,7 @@ if (typeof django == "undefined") {
 			}
 		);
 	};
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -1998,7 +1998,7 @@ if (typeof django == "undefined") {
 
 	var p = TextExtArrow.prototype,
 		/**
-		 * Arrow plugin only has one option and that is its HTML template. It could be 
+		 * Arrow plugin only has one option and that is its HTML template. It could be
 		 * changed when passed to the `$().textext()` function. For example:
 		 *
 		 *     $('textarea').textext({
@@ -2012,7 +2012,7 @@ if (typeof django == "undefined") {
 		 * @date 2011/12/27
 		 * @id TextExtArrow.options
 		 */
-		
+
 		/**
 		 * HTML source that is used to generate markup required for the arrow.
 		 *
@@ -2057,7 +2057,7 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// Event handlers
-	
+
 	/**
 	 * Reacts to the `click` event whenever user clicks the arrow.
 	 *
@@ -2073,11 +2073,11 @@ if (typeof django == "undefined") {
 		this.trigger('toggleDropdown');
 		this.core().focusInput();
 	};
-	
+
 	//--------------------------------------------------------------------------------
 	// Core functionality
 
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -2103,7 +2103,7 @@ if (typeof django == "undefined") {
 	$.fn.textext.addPlugin('autocomplete', TextExtAutocomplete);
 
 	var p = TextExtAutocomplete.prototype,
-		
+
 		CSS_DOT            = '.',
 		CSS_SELECTED       = 'text-selected',
 		CSS_DOT_SELECTED   = CSS_DOT + CSS_SELECTED,
@@ -2113,7 +2113,7 @@ if (typeof django == "undefined") {
 		CSS_DOT_LABEL      = CSS_DOT + CSS_LABEL,
 
 		/**
-		 * Autocomplete plugin options are grouped under `autocomplete` when passed to the 
+		 * Autocomplete plugin options are grouped under `autocomplete` when passed to the
 		 * `$().textext()` function. For example:
 		 *
 		 *     $('textarea').textext({
@@ -2168,7 +2168,7 @@ if (typeof django == "undefined") {
 		/**
 		 * This option allows to override how a suggestion item is rendered. The value should be
 		 * a function, the first argument of which is suggestion to be rendered and `this` context
-		 * is the current instance of `TextExtAutocomplete`. 
+		 * is the current instance of `TextExtAutocomplete`.
 		 *
 		 * [Click here](/manual/examples/autocomplete-with-custom-render.html) to see a demo.
 		 *
@@ -2222,9 +2222,9 @@ if (typeof django == "undefined") {
 		 * @date 2011/08/17
 		 * @id TextExtAutocomplete.events
 		 */
-	
+
 		/**
-		 * Autocomplete plugin triggers and reacts to the `hideDropdown` to hide the dropdown if it's 
+		 * Autocomplete plugin triggers and reacts to the `hideDropdown` to hide the dropdown if it's
 		 * already visible.
 		 *
 		 * @name hideDropdown
@@ -2235,11 +2235,11 @@ if (typeof django == "undefined") {
 		EVENT_HIDE_DROPDOWN = 'hideDropdown',
 
 		/**
-		 * Autocomplete plugin triggers and reacts to the `showDropdown` to show the dropdown if it's 
+		 * Autocomplete plugin triggers and reacts to the `showDropdown` to show the dropdown if it's
 		 * not already visible.
 		 *
 		 * It's possible to pass a render callback function which will be called instead of the
-		 * default `TextExtAutocomplete.renderSuggestions()`. 
+		 * default `TextExtAutocomplete.renderSuggestions()`.
 		 *
 		 * Here's how another plugin should trigger this event with the optional render callback:
 		 *
@@ -2259,8 +2259,8 @@ if (typeof django == "undefined") {
 
 		/**
 		 * Autocomplete plugin reacts to the `setSuggestions` event triggered by other plugins which
-		 * wish to populate the suggestion items. Suggestions should be passed as event argument in the 
-		 * following format: `{ data : [ ... ] }`. 
+		 * wish to populate the suggestion items. Suggestions should be passed as event argument in the
+		 * following format: `{ data : [ ... ] }`.
 		 *
 		 * Here's how another plugin should trigger this event:
 		 *
@@ -2286,7 +2286,7 @@ if (typeof django == "undefined") {
 		/**
 		 * Autocomplete plugin triggers `getFormData` event with the current suggestion so that the the core
 		 * will be updated with serialized data to be submitted with the HTML form.
-		 * 
+		 *
 		 * @name getFormData
 		 * @author agorbatchev
 		 * @date 2011/08/18
@@ -2297,7 +2297,7 @@ if (typeof django == "undefined") {
 		/**
 		 * Autocomplete plugin reacts to `toggleDropdown` event and either shows or hides the dropdown
 		 * depending if it's currently hidden or visible.
-		 * 
+		 *
 		 * @name toggleDropdown
 		 * @author agorbatchev
 		 * @date 2011/12/27
@@ -2308,7 +2308,7 @@ if (typeof django == "undefined") {
 
 		POSITION_ABOVE = 'above',
 		POSITION_BELOW = 'below',
-		
+
 		DATA_MOUSEDOWN_ON_AUTOCOMPLETE = 'mousedownOnAutocomplete',
 
 		DEFAULT_OPTS = {
@@ -2385,8 +2385,8 @@ if (typeof django == "undefined") {
 				;
 
 			$(self).data('container', container);
-			
-			$(document.body).click(function(e) 
+
+			$(document.body).click(function(e)
 			{
 				if (self.isDropdownVisible() && !self.withinWrapElement(e.target))
 					self.trigger(EVENT_HIDE_DROPDOWN);
@@ -2398,9 +2398,9 @@ if (typeof django == "undefined") {
 
 	/**
 	 * Returns top level dropdown container HTML element.
-	 * 
+	 *
 	 * @signature TextExtAutocomplete.containerElement()
-	 * 
+	 *
 	 * @author agorbatchev
 	 * @date 2011/08/15
 	 * @id TextExtAutocomplete.containerElement
@@ -2412,7 +2412,7 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// User mouse/keyboard input
-	
+
 	/**
 	 * Reacts to the `mouseOver` event triggered by the TextExt core.
 	 *
@@ -2436,7 +2436,7 @@ if (typeof django == "undefined") {
 			target.addClass(CSS_SELECTED);
 		}
 	};
-	
+
 	/**
 	 * Reacts to the `mouseDown` event triggered by the TextExt core.
 	 *
@@ -2452,7 +2452,7 @@ if (typeof django == "undefined") {
 	{
 		this.containerElement().data(DATA_MOUSEDOWN_ON_AUTOCOMPLETE, true);
 	};
-	
+
 	/**
 	 * Reacts to the `click` event triggered by the TextExt core.
 	 *
@@ -2472,7 +2472,7 @@ if (typeof django == "undefined") {
 
 		if(target.is(CSS_DOT_SUGGESTION) || target.is(CSS_DOT_LABEL))
 			self.trigger('enterKeyPress');
-		
+
 		if (self.core().hasPlugin('tags'))
 			self.val('');
 	};
@@ -2495,17 +2495,17 @@ if (typeof django == "undefined") {
 			isBlurByMousedown = container.data(DATA_MOUSEDOWN_ON_AUTOCOMPLETE) === true
 			;
 
-		// only trigger a close event if the blur event was 
+		// only trigger a close event if the blur event was
 		// not triggered by a mousedown event on the autocomplete
 		// otherwise set focus back back on the input
 		if(self.isDropdownVisible())
 			isBlurByMousedown ? self.core().focusInput() : self.trigger(EVENT_HIDE_DROPDOWN);
-				
+
 		container.removeData(DATA_MOUSEDOWN_ON_AUTOCOMPLETE);
 	};
 
 	/**
-	 * Reacts to the `backspaceKeyPress` event triggered by the TextExt core. 
+	 * Reacts to the `backspaceKeyPress` event triggered by the TextExt core.
 	 *
 	 * @signature TextExtAutocomplete.onBackspaceKeyPress(e)
 	 *
@@ -2562,7 +2562,7 @@ if (typeof django == "undefined") {
 		var self = this;
 
 		self.isDropdownVisible()
-			? self.toggleNextSuggestion() 
+			? self.toggleNextSuggestion()
 			: self.getSuggestions()
 			;
 	};
@@ -2827,8 +2827,8 @@ if (typeof django == "undefined") {
 	 * @signature TextExtAutocomplete.onShowDropdown(e, renderCallback)
 	 *
 	 * @param e {Object} jQuery event.
-	 * @param renderCallback {Function} Optional callback function which would be used to 
-	 * render dropdown items. As a first argument, reference to the current instance of 
+	 * @param renderCallback {Function} Optional callback function which would be used to
+	 * render dropdown items. As a first argument, reference to the current instance of
 	 * Autocomplete plugin will be supplied. It's assumed, that if this callback is provided
 	 * rendering will be handled completely manually.
 	 *
@@ -2855,7 +2855,7 @@ if (typeof django == "undefined") {
 			self.renderSuggestions(self._suggestions);
 			self.toggleNextSuggestion();
 		}
-		
+
 		self.showDropdown(self.containerElement());
 		self.setSelectedSuggestion(current);
 	};
@@ -2869,7 +2869,7 @@ if (typeof django == "undefined") {
 	 *         showHideDropdown : false
 	 *     }
 	 *
-	 * Notice the optional `showHideDropdown` option. By default, ie without the `showHideDropdown` 
+	 * Notice the optional `showHideDropdown` option. By default, ie without the `showHideDropdown`
 	 * value the method will trigger either `showDropdown` or `hideDropdown` depending if there are
 	 * suggestions. If set to `false`, no event is triggered.
 	 *
@@ -3165,12 +3165,12 @@ if (typeof django == "undefined") {
 		if(suggestion)
 		{
 			self.val(self.itemManager().itemToString(suggestion));
-			self.core().getFormData();	
+			self.core().getFormData();
 		}
 
 		self.trigger(EVENT_HIDE_DROPDOWN);
 	};
-	
+
 	/**
 	 * Determines if the specified HTML element is within the TextExt core wrap HTML element.
 	 *
@@ -3183,11 +3183,11 @@ if (typeof django == "undefined") {
 	 * @date 2012/01/15
 	 * @id TextExtAutocomplete.withinWrapElement
 	 */
-	p.withinWrapElement = function(element) 
+	p.withinWrapElement = function(element)
 	{
 		return this.core().wrapElement().find(element).size() > 0;
 	}
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -3204,10 +3204,10 @@ if (typeof django == "undefined") {
 	 * tags it's possible to add.
 	 *
 	 * The list of allowed items can be either specified through the
-	 * options, can come from the Suggestions plugin or be loaded by the Ajax 
-	 * plugin. All these plugins have one thing in common -- they 
+	 * options, can come from the Suggestions plugin or be loaded by the Ajax
+	 * plugin. All these plugins have one thing in common -- they
 	 * trigger `setSuggestions` event which the Filter plugin is expecting.
-	 * 
+	 *
 	 * @author agorbatchev
 	 * @date 2011/08/18
 	 * @id TextExtFilter
@@ -3220,7 +3220,7 @@ if (typeof django == "undefined") {
 	var p = TextExtFilter.prototype,
 
 		/**
-		 * Filter plugin options are grouped under `filter` when passed to the 
+		 * Filter plugin options are grouped under `filter` when passed to the
 		 * `$().textext()` function. For example:
 		 *
 		 *     $('textarea').textext({
@@ -3234,7 +3234,7 @@ if (typeof django == "undefined") {
 		 * @date 2011/08/18
 		 * @id TextExtFilter.options
 		 */
-		
+
 		/**
 		 * This is a toggle switch to enable or disable the Filter plugin. The value is checked
 		 * each time at the top level which allows you to toggle this setting on the fly.
@@ -3280,7 +3280,7 @@ if (typeof django == "undefined") {
 		 */
 
 		/**
-		 * Filter plugin reacts to the `setSuggestions` event triggered by other plugins like 
+		 * Filter plugin reacts to the `setSuggestions` event triggered by other plugins like
 		 * Suggestions and Ajax.
 		 *
 		 * However, event if this event is handled and items are passed with it and stored, if `items`
@@ -3330,8 +3330,8 @@ if (typeof django == "undefined") {
 
 	/**
 	 * Reacts to the [`getFormData`][1] event triggered by the core. Returns data with the
-	 * weight of 200 to be *greater than the Autocomplete plugins* data weights. 
-	 * The weights system is covered in greater detail in the [`getFormData`][1] event 
+	 * weight of 200 to be *greater than the Autocomplete plugins* data weights.
+	 * The weights system is covered in greater detail in the [`getFormData`][1] event
 	 * documentation.
 	 *
 	 * This method does nothing if Tags tag is also present.
@@ -3416,7 +3416,7 @@ if (typeof django == "undefined") {
 
 	/**
 	 * Reacts to the `setSuggestions` events and stores supplied suggestions for future use.
-	 * 
+	 *
 	 * @signature TextExtFilter.onSetSuggestions(e, data)
 	 *
 	 * @param e {Object} jQuery event.
@@ -3429,7 +3429,7 @@ if (typeof django == "undefined") {
 	{
 		this._suggestions = data.result;
 	};
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -3455,7 +3455,7 @@ if (typeof django == "undefined") {
 
 	var p = TextExtFocus.prototype,
 		/**
-		 * Focus plugin only has one option and that is its HTML template. It could be 
+		 * Focus plugin only has one option and that is its HTML template. It could be
 		 * changed when passed to the `$().textext()` function. For example:
 		 *
 		 *     $('textarea').textext({
@@ -3469,7 +3469,7 @@ if (typeof django == "undefined") {
 		 * @date 2011/08/18
 		 * @id TextExtFocus.options
 		 */
-		
+
 		/**
 		 * HTML source that is used to generate markup required for the focus effect.
 		 *
@@ -3542,9 +3542,9 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// Event handlers
-	
+
 	/**
-	 * Reacts to the `blur` event and hides the focus effect with a slight delay which 
+	 * Reacts to the `blur` event and hides the focus effect with a slight delay which
 	 * allows quick refocusing without effect blinking in and out.
 	 *
 	 * @signature TextExtFocus.onBlur(e)
@@ -3583,10 +3583,10 @@ if (typeof django == "undefined") {
 		var self = this;
 
 		clearTimeout(self._timeoutId);
-		
+
 		self.getFocus().show();
 	};
-	
+
 	//--------------------------------------------------------------------------------
 	// Core functionality
 
@@ -3603,7 +3603,7 @@ if (typeof django == "undefined") {
 	{
 		return this.core().wrapElement().find('.text-focus');
 	};
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -3692,7 +3692,7 @@ if (typeof django == "undefined") {
 		 * @date 2011/08/18
 		 * @id TextExtPrompt.events.blur
 		 */
-	
+
 		DEFAULT_OPTS = {
 			prompt : 'Awaiting input...',
 
@@ -3722,13 +3722,13 @@ if (typeof django == "undefined") {
 			;
 
 		self.baseInit(core, DEFAULT_OPTS);
-		
+
 		container = $(self.opts(OPT_HTML_PROMPT));
 		$(self).data('container', container);
 
 		self.core().wrapElement().append(container);
 		self.setPrompt(self.opts(OPT_PROMPT));
-		
+
 		prompt = core.input().attr(placeholderKey);
 
 		if(!prompt)
@@ -3753,7 +3753,7 @@ if (typeof django == "undefined") {
 
 	//--------------------------------------------------------------------------------
 	// Event handlers
-	
+
 	/**
 	 * Reacts to the `postInit` and configures the plugin for initial display.
 	 *
@@ -3808,7 +3808,7 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Reacts to the `blur` event and shows the prompt effect with a slight delay which 
+	 * Reacts to the `blur` event and shows the prompt effect with a slight delay which
 	 * allows quick refocusing without effect blinking in and out.
 	 *
 	 * The prompt is restored if the text box has no value.
@@ -3845,7 +3845,7 @@ if (typeof django == "undefined") {
 		var self     = this,
 			input    = self.input()
 			;
-		
+
 		if($.trim(self.val()).length === 0 && !input.is(':focus'))
 			self.containerElement().removeClass(CSS_HIDE_PROMPT);
 	};
@@ -3879,7 +3879,7 @@ if (typeof django == "undefined") {
 	{
 		this.hidePrompt();
 	};
-	
+
 	//--------------------------------------------------------------------------------
 	// Core functionality
 
@@ -3912,7 +3912,7 @@ if (typeof django == "undefined") {
 	{
 		return $(this).data('container');
 	};
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -3938,7 +3938,7 @@ if (typeof django == "undefined") {
 
 	var p = TextExtSuggestions.prototype,
 		/**
-		 * Suggestions plugin only has one option and that is to set suggestion items. It could be 
+		 * Suggestions plugin only has one option and that is to set suggestion items. It could be
 		 * changed when passed to the `$().textext()` function. For example:
 		 *
 		 *     $('textarea').textext({
@@ -4048,7 +4048,7 @@ if (typeof django == "undefined") {
 	};
 
 	/**
-	 * Reacts to the `postInit` event and triggers `setSuggestions` event to set suggestions list 
+	 * Reacts to the `postInit` event and triggers `setSuggestions` event to set suggestions list
 	 * right after initialization.
 	 *
 	 * @signature TextExtSuggestions.onPostInit(e)
@@ -4087,7 +4087,7 @@ if (typeof django == "undefined") {
 		suggestions.sort();
 		self.setSuggestions(self.itemManager().filter(suggestions, data.query));
 	};
-})(jQuery);
+})(django.jQuery);
 /**
  * jQuery TextExt Plugin
  * http://textextjs.com
@@ -4778,8 +4778,8 @@ if (typeof django == "undefined") {
 		node.data(CSS_TAG, tag);
 		return node;
 	};
-})(jQuery);
-;jQuery.fn.textext.css = '.text-core {\n\
+})(django.jQuery);
+;django.jQuery.fn.textext.css = '.text-core {\n\
   position: relative;\n\
 }\n\
 .text-core .text-wrap {\n\

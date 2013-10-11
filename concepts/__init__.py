@@ -4,7 +4,7 @@ django-concepts
 __version_info__ = {
     'major': 0,
     'minor': 4,
-    'micro': 3,
+    'micro': 4,
     'releaselevel': 'final',
     'serial': 1
 }
