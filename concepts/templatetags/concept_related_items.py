@@ -50,7 +50,7 @@ class RelatedObjectsNode(Node):
         for x in obj.concepts_conceptitem_items.all():
             related = x.content_object
             if related is None:
-                obj.concepts_conceptitem.filter(pk=x.pk).delete()
+                x.delete()
             else:
                 # Get the app and model
                 model = related._meta.verbose_name
