@@ -1,23 +1,42 @@
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.views.generic.list_detail import object_list
+from django.views.generic import ListView
 from django.utils import simplejson
 
 from concepts.models import ConceptItem, Concept
 
 
+class ExtraContextListView(ListView):
+    extra_context = {}
+
+    def get_context_data(self, **kwargs):
+        context = super(ExtraContextListView, self).get_context_data(**kwargs)
+        context.update(self.extra_context)
+        return context
+
+
 def tagged_object_list(request, slug, queryset, **kwargs):
+    """
+    A thin wrapper around
+    ``django.views.generic.list_detail.object_list`` which creates a
+    ``QuerySet`` containing instances of the given queryset or model
+    tagged with the given tag.
+
+    In addition to the context variables set up by ``object_list``, a
+    ``tag`` context variable will contain the ``Tag`` instance for the
+    tag.
+    """
     if callable(queryset):
         queryset = queryset()
     tag = get_object_or_404(Concept, slug=slug)
-    qs = queryset.filter(pk__in=ConceptItem.objects.filter(
-        tag=tag, content_type=ContentType.objects.get_for_model(queryset.model)
-    ).values_list("object_id", flat=True))
+    ctype = ContentType.objects.get_for_model(queryset.model)
+    pks = ConceptItem.objects.filter(tag=tag, content_type=ctype).values_list("object_id", flat=True)
+    qs = queryset.filter(pk__in=pks)
     if "extra_context" not in kwargs:
         kwargs["extra_context"] = {}
     kwargs["extra_context"]["tag"] = tag
-    return object_list(request, qs, **kwargs)
+    return ExtraContextListView.as_view(queryset=qs, **kwargs)(request)
 
 
 def list_tags(request):
