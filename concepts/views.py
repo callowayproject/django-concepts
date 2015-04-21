@@ -2,7 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
-from django.utils import simplejson
+import json
 
 from concepts.models import ConceptItem, Concept
 
@@ -57,4 +57,4 @@ def list_tags(request):
     else:
         tags = []
 
-    return HttpResponse(simplejson.dumps(list(tags)), mimetype='application/javascript')
+    return HttpResponse(json.dumps(list(tags)), mimetype='application/javascript')
