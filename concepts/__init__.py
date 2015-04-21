@@ -3,7 +3,7 @@ django-concepts
 """
 __version_info__ = {
     'major': 0,
-    'minor': 5,
+    'minor': 6,
     'micro': 0,
     'releaselevel': 'final',
     'serial': 1
@@ -20,3 +20,5 @@ def get_version(short=False):
     return ''.join(vers)
 
 __version__ = get_version()
+
+default_app_config = 'concepts.apps.ConceptsAppConfig'
