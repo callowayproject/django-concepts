@@ -57,4 +57,4 @@ def list_tags(request):
     else:
         tags = []
 
-    return HttpResponse(json.dumps(list(tags)), mimetype='application/javascript')
+    return HttpResponse(json.dumps(list(tags)), content_type='application/javascript')
