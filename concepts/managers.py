@@ -14,11 +14,10 @@ try:
 except ImportError:
     pass
 
+
 class ConceptManager(TaggableManager):
-    def __init__(self, verbose_name=_("Concepts"),
-        help_text=_("Press return to complete each tag."),
-        through=ConceptItem, blank=False):
-        super(ConceptManager, self).__init__(verbose_name, help_text, through, blank)
+    def __init__(self, verbose_name=_("Concepts"), help_text=_("Press return to complete each tag."), through=ConceptItem, **kwargs):
+        super(ConceptManager, self).__init__(verbose_name, help_text, through, **kwargs)
 
     def extra_filters(self, pieces, pos, negate):
         if negate or not self.use_gfk:
