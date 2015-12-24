@@ -5,6 +5,7 @@ from concepts.admin import ConceptItemInline
 
 class SimpleTextTwoAdmin(admin.ModelAdmin):
     inlines = [ConceptItemInline, ]
+    save_as = True
 
 
 admin.site.register(SimpleText)
