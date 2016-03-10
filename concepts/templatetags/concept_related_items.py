@@ -87,7 +87,7 @@ class AdminUrlNode(Node):
 
         try:
             urlname = 'admin:%s_%s_change' % (
-                obj._meta.app_label, obj._meta.module_name
+                obj._meta.app_label, obj._meta.model_name
             )
             url = reverse(urlname, args=(obj.pk,))
         except NoReverseMatch, err:
