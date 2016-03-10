@@ -66,7 +66,7 @@ class ConceptAdmin(admin.ModelAdmin):
     )
 
     def concept_items(self, obj):
-        return obj.concept_items
+        return obj.items
 
     def queryset(self, request):
         """
