@@ -8,12 +8,6 @@ from .models import ConceptItem
 from .forms import ConceptField
 from .settings import PARSER
 
-try:
-    from south.modelsinspector import add_ignored_fields
-    add_ignored_fields(["^concepts\.managers"])
-except ImportError:
-    pass
-
 
 class ConceptManager(TaggableManager):
     def __init__(self, verbose_name=_("Concepts"), help_text=_("Press return to complete each tag."), through=ConceptItem, **kwargs):

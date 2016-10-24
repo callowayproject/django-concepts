@@ -2,12 +2,12 @@ import datetime
 
 import django
 from django.contrib.contenttypes.models import ContentType
-from django.db import connection, models
 from django.utils.translation import ugettext_lazy as _
+from django.db import connection, models
+qn = connection.ops.quote_name
 
 from taggit.models import TagBase, GenericTaggedItemBase, ItemBase
-
-qn = connection.ops.quote_name
+from .settings import CATEGORY_CHOICES
 
 
 def get_queryset_and_model(queryset_or_model):
@@ -209,7 +209,12 @@ class ConceptModelManager(models.Manager):
 
 class Concept(TagBase):
     """An idea or other freeform categorization of something"""
-
+    category = models.CharField(
+        _('category'),
+        max_length=20,
+        blank=True, null=True,
+        choices=CATEGORY_CHOICES,
+        default='concept')
     created = models.DateTimeField(_('created'),
         auto_now_add=True,
         editable=False)
@@ -226,6 +231,7 @@ class Concept(TagBase):
     url = models.CharField(blank=True, max_length=255,
         help_text=_("A URL for more information regarding this concept."))
     woeid = models.IntegerField(_('where on earth id'), blank=True, null=True)
+    geonamesid = models.IntegerField(_('GeoNames id'), blank=True, null=True)
     latitude = models.DecimalField(_('latitude'),
         max_digits=11, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(_('longitude'),
@@ -238,6 +244,9 @@ class Concept(TagBase):
         max_digits=11, decimal_places=6, blank=True, null=True)
     bbox_w = models.DecimalField(_('bounding box west'),
         max_digits=11, decimal_places=6, blank=True, null=True)
+    geometry = models.TextField(
+        _('geometry'),
+        blank=True, null=True)
 
     objects = ConceptModelManager()
 

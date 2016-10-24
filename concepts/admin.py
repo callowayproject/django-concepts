@@ -39,8 +39,8 @@ class ConceptItemInline(GenericTabularInline):
     model = ConceptItem
     raw_id_fields = ('tag', )
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        return super(ConceptItemInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     return super(ConceptItemInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class ConceptAdmin(admin.ModelAdmin):

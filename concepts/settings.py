@@ -1,11 +1,21 @@
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 DEFAULT_SETTINGS = {
-    'JS_BASE_URL': settings.STATIC_URL+"concepts/",
     'PARSER': 'concepts.parsers.default',
     'WIDGET': 'concepts.widgets.TextExtWidget',
     'WEIGHTS': ((0, 'Hide'), (10, 'Low'), (20, 'Medium'), (30, 'High')),
     'WIDGET_CSS_PATH': 'concepts/horizontalradio.css',
+    'CATEGORY_CHOICES': [
+        ('concept', _('Concept')),
+        ('date', _('Date, (Holiday, Event)')),
+        ('term', _('Industry Term')),
+        ('location', _('Location')),
+        ('natural-feature', _('Natural Feature')),
+        ('organism', _('Organism (Animal, Plant)')),
+        ('organization', _('Organization')),
+        ('person', _('Person')),
+    ],
 }
 
 USER_SETTINGS = DEFAULT_SETTINGS.copy()
