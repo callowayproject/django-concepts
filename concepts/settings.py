@@ -24,7 +24,7 @@ USER_SETTINGS.update(getattr(settings, 'CONCEPTS_SETTINGS', {}))
 if callable(USER_SETTINGS['PARSER']):
     pass
 elif isinstance(USER_SETTINGS['PARSER'], basestring):
-    from django.utils.importlib import import_module
+    from importlib import import_module
     bits = USER_SETTINGS['PARSER'].split(".")
     module = import_module(".".join(bits[:-1]))
     USER_SETTINGS['PARSER'] = getattr(module, bits[-1])
@@ -33,7 +33,7 @@ else:
     raise ImproperlyConfigured("PARSER must be a callable or a string.")
 
 if isinstance(USER_SETTINGS['WIDGET'], basestring):
-    from django.utils.importlib import import_module
+    from importlib import import_module
     bits = USER_SETTINGS['WIDGET'].split(".")
     module = import_module(".".join(bits[:-1]))
     USER_SETTINGS['WIDGET'] = getattr(module, bits[-1])

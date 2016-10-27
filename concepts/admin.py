@@ -1,6 +1,6 @@
 import django
 from django.contrib import admin
-from django.contrib.contenttypes.generic import GenericTabularInline
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db.models import Count
 from django import forms
 
